@@ -488,9 +488,9 @@ if( function_exists('acf_add_options_page') ) {
         extract( $_POST );
 		$url = 'availability/'.$hotel_id;
 		$method = 'GET';   
-        $token = 'eaf02efe-87fd-4964-a233-f0f7bf7f775a1';             		    
+
 		$payload = 'start_date_time='.$start_date.$time.'&party_size='.$party_size;
-		$result = executeCurl($url,$method,$token,$payload);
+		$result = executeCurl($url,$method,$payload);
         $bills_filter_results = json_decode($result,true);
         $_SESSION['bills_filter_results'] = $bills_filter_results;
         $max_slot=count( $_SESSION['bills_filter_results']['times'] );        
@@ -773,8 +773,8 @@ function custom_bills_bookings_column( $column, $post_id ) {
 if( function_exists('acf_add_options_page') ) {
     
     acf_add_options_page(array(
-        'page_title'    => 'Theme General Settings',
-        'menu_title'    => 'Theme Settings',
+        'page_title'    => 'Theme Settings',
+        'menu_title'    => 'Theme options',
         'menu_slug'     => 'theme-general-settings',
         'capability'    => 'edit_posts',
         'redirect'      => false
@@ -1083,14 +1083,13 @@ $ch=curl_init($bills_google_search_url);
   }
   
   
-function executeCurl($url,$method,$token,$payload){
+function executeCurl($url,$method,$payload){
 
-	echo $_SESSION['client_access_token']; 
     if(isset($_SESSION['client_access_token'])){
     $token = $_SESSION['client_access_token'];           
     }
     else{          
-    $token = 'eaf02efe-87fd-4964-a233-f0f7bf7f775a1'; 
+    $token = 'eaf02efe-87fd-4964-a233-f0f7bf7f775a'; 
     }    
 	$apiURL = "https://platform.otqa.com/";
 	$apiFullURL = $apiURL.''.$url;
@@ -1113,18 +1112,12 @@ function executeCurl($url,$method,$token,$payload){
 	$result=curl_exec($ch);
     $bill_filter_result = json_decode($result,true);
     $error_msg = isset($bill_filter_result['errors'])?$bill_filter_result['errors']:'';
-    echo $error_msg;    
+    //echo $error_msg;    
     if(!empty($error_msg)){
-        client_token_gen();
-        print_r($results); 
-        $client_access_token = $results->access_token;   
-        $_SESSION['client_access_token_new'] = $client_access_token;
-        //echo $results;
-        echo 'worinh';                                        
+        client_token_gen();                                             
     }   
 	$err = curl_error($ch);	
 	curl_close($ch);
-    die;
 	return $result;
 	
 }		
@@ -1308,9 +1301,14 @@ add_action("wp_ajax_nopriv_client_token_gen", "client_token_gen");
                     );  
         curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);        
         curl_setopt($ch, CURLOPT_POSTFIELD);
-        $results=curl_exec($ch);
+        $result=curl_exec($ch);
         $err = curl_error($ch);
         curl_close($ch);
-        return $results;       
+        $doc_result = json_decode($result,true);
+        //print_r($doc_result);
+        $client_access_token = $doc_result['access_token']; 
+        $_SESSION['client_access_token'] = $client_access_token; 
+        echo $client_access_token;     
+        return $client_access_token;       
     } 
 
