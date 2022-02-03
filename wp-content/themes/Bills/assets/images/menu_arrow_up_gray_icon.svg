@@ -1,0 +1,12 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 25" width="29" height="25">
+	<title>arrow_down_gray_icon-svg</title>
+	<style>
+		tspan { white-space:pre }
+		.s0 { fill: #255a40 } 
+	</style>
+	<g id="Layer">
+		<g id="Icon-Chevron-Left">
+			<path id="Fill-35" class="s0" d="m28.7 17.6l-2 2l-11.7-11.8l-11.7 11.8l-2-2l13.7-13.7l13.7 13.7" />
+		</g>
+	</g>
+</svg>

@@ -1,0 +1,130 @@
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-Bold.eot');
+    src: url('EBGaramond-Bold.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-Bold.woff2') format('woff2'),
+        url('EBGaramond-Bold.woff') format('woff'),
+        url('EBGaramond-Bold.ttf') format('truetype'),
+        url('EBGaramond-Bold.svg#EBGaramond-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-BoldItalic.eot');
+    src: url('EBGaramond-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-BoldItalic.woff2') format('woff2'),
+        url('EBGaramond-BoldItalic.woff') format('woff'),
+        url('EBGaramond-BoldItalic.ttf') format('truetype'),
+        url('EBGaramond-BoldItalic.svg#EBGaramond-BoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-ExtraBold.eot');
+    src: url('EBGaramond-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-ExtraBold.woff2') format('woff2'),
+        url('EBGaramond-ExtraBold.woff') format('woff'),
+        url('EBGaramond-ExtraBold.ttf') format('truetype'),
+        url('EBGaramond-ExtraBold.svg#EBGaramond-ExtraBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-Medium.eot');
+    src: url('EBGaramond-Medium.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-Medium.woff2') format('woff2'),
+        url('EBGaramond-Medium.woff') format('woff'),
+        url('EBGaramond-Medium.ttf') format('truetype'),
+        url('EBGaramond-Medium.svg#EBGaramond-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-Italic.eot');
+    src: url('EBGaramond-Italic.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-Italic.woff2') format('woff2'),
+        url('EBGaramond-Italic.woff') format('woff'),
+        url('EBGaramond-Italic.ttf') format('truetype'),
+        url('EBGaramond-Italic.svg#EBGaramond-Italic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-ExtraBoldItalic.eot');
+    src: url('EBGaramond-ExtraBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-ExtraBoldItalic.woff2') format('woff2'),
+        url('EBGaramond-ExtraBoldItalic.woff') format('woff'),
+        url('EBGaramond-ExtraBoldItalic.ttf') format('truetype'),
+        url('EBGaramond-ExtraBoldItalic.svg#EBGaramond-ExtraBoldItalic') format('svg');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-Regular.eot');
+    src: url('EBGaramond-Regular.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-Regular.woff2') format('woff2'),
+        url('EBGaramond-Regular.woff') format('woff'),
+        url('EBGaramond-Regular.ttf') format('truetype'),
+        url('EBGaramond-Regular.svg#EBGaramond-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-MediumItalic.eot');
+    src: url('EBGaramond-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-MediumItalic.woff2') format('woff2'),
+        url('EBGaramond-MediumItalic.woff') format('woff'),
+        url('EBGaramond-MediumItalic.ttf') format('truetype'),
+        url('EBGaramond-MediumItalic.svg#EBGaramond-MediumItalic') format('svg');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-SemiBold.eot');
+    src: url('EBGaramond-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-SemiBold.woff2') format('woff2'),
+        url('EBGaramond-SemiBold.woff') format('woff'),
+        url('EBGaramond-SemiBold.ttf') format('truetype'),
+        url('EBGaramond-SemiBold.svg#EBGaramond-SemiBold') format('svg');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-SemiBoldItalic.eot');
+    src: url('EBGaramond-SemiBoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('EBGaramond-SemiBoldItalic.woff2') format('woff2'),
+        url('EBGaramond-SemiBoldItalic.woff') format('woff'),
+        url('EBGaramond-SemiBoldItalic.ttf') format('truetype'),
+        url('EBGaramond-SemiBoldItalic.svg#EBGaramond-SemiBoldItalic') format('svg');
+    font-weight: 600;
+    font-style: italic;
+    font-display: swap;
+}
+
