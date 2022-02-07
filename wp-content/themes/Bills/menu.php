@@ -93,7 +93,7 @@ get_header();
         <div class="heading">Allergens</div>
         <div class="view">
           <p>Remove items containing:</p>
-          <button class="btn"><span>Clear Filters</span></button>
+          <button class="btn clear-filter"><span>Clear Filters</span></button>
         </div>
       </div>
       <div class="col-12 col-sm-12 col-md-8 col-lg-9 col-xl-9">
@@ -178,20 +178,20 @@ get_header();
                               'terms' => $ar,  
                             )
                           )
-                        )); ?>
-                       <ul class="link link_target">
-                          <?php
+                        ));
                             //echo '<pre>';
                             //print_r($query_term);
                             foreach($query_term as $q_term) 
                             {
+                              ?>
+                             <ul class="link link_target">
+                               <?php
 
-                              //echo '<pre>';
-                              //print_r($q_term);
-                               $custom_fieldm = get_post_meta( $q_term->ID, '_fdm_menu_item_custom_fields', true );
+                              /*echo '<pre>';
+                              print_r($q_term->ID);*/
 
-                               $price = get_post_meta( $q_term->ID, 'fdm_item_price', true );
-                              
+                              $custom_fieldm = get_post_meta( $q_term->ID, '_fdm_menu_item_custom_fields', true );
+                              $price = get_post_meta( $q_term->ID, 'fdm_item_price', true );
                               //print_r($custom_fieldm['allergy-filter']);
                               if($custom_fieldm['allergy-filter']=='')
                               {
@@ -204,7 +204,7 @@ get_header();
 
                               }
 
-                              if($custom_fieldm['menu-category']=='food'){
+                              /*if($custom_fieldm['menu-category']=='food'){*/
                               ?>
                               <li class="allergent" data-id="<?php echo $custom_fieldm['menu-category'] ?>" data-allergy="<?php echo $imploded_string; ?>">
                                 <div class="subtitle" ><?php
@@ -223,11 +223,11 @@ get_header();
                               <li data-id="<?php echo $custom_fieldm['menu-category'] ?>">
                                 <div class="price"><?php echo $price ?></div>
                               </li>
-
-                            <?php }
+                            </ul>  
+                            <?php  /*}*/
                           }
                           ?> 
-                        </ul>
+                        
                      </div>
                     <?php }
                   }
@@ -253,7 +253,9 @@ get_header();
     var b='food';
     //console.log(a);
     $(".menu_item_div").hide();
+    $(".menu-items").hide();
     $(".menu"+a).show();
+    // $(".menu"+a+" .menu-items").show();
     $(".menu"+a+" .link li").show().addClass("show");
     $(".menu-link1[data-menu-id="+a+"]").addClass("active_menu_id");
 
@@ -269,6 +271,7 @@ get_header();
 
     $(".menu-link1").click( function(e)
     {
+      clearFilter();
       $('.first_link').find(".active_menu_id").removeClass("active_menu_id");
       $(this).addClass("active_menu_id");
       e.preventDefault();
@@ -279,10 +282,12 @@ get_header();
       $(".menu_item_div").hide();
       $(".menu"+data_id).show();
       //$(".menu"+data_id+" .link li").show().addClass("show");
-       if( $('.second_link').find(".active_menu_id").length > 0 ) {
+       if( $('.second_link').find(".active_menu_id").length > 0 ) 
+       {
         var data_menu_id = $('.second_link').find(".active_menu_id").data("attr").toLowerCase();   
         console.log(data_menu_id);     
         $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").show().addClass("show");
+        $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").parent(".link").siblings(".menu-items").show();
        }
         // countClass = $(".stp-box").find("li.show").length;
         // if(countClass < 1 ) {
@@ -295,12 +300,14 @@ get_header();
     //menu item 1 is selected
     $("#contentArea .link li").hide().removeClass("show"); 
     $(".menu"+a+" .link li[data-id="+b+"]").show().addClass("show");
+    $(".menu"+a+" .link li[data-id="+b+"]").parent(".link").siblings(".menu-items").show();
     $(".menu_link2[data-attr="+c+"]").addClass("active_menu_id")
 
     
     $(".menu_link2").click(function(e)
     {
       e.preventDefault();
+      clearFilter();
       $('.second_link').find(".active_menu_id").removeClass("active_menu_id");
       $(this).addClass("active_menu_id");
       var data_id = $(this).data("attr").toLowerCase();
@@ -312,7 +319,9 @@ get_header();
         //console.log(data_menu_id);
         //menu item 1 is selected
         $("#contentArea .link li").hide().removeClass("show"); 
+        $("#contentArea .menu-items").hide(); 
         $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").show().addClass("show");
+        $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").parent(".link").siblings(".menu-items").show();
 
         // countClass = $(".stp-box").find(".show").length;
         // if(countClass < 1 ) {
@@ -335,30 +344,18 @@ get_header();
 
 
 
-    $(".chk").change(function()
-    {
+    $(".chk").change(function(){
         var favorite = [];
-        var allergy_name = $(this).find("input[type=checkbox]").val().toLowerCase();
+        var allergy_name = $(this).find("input[type=checkbox]").val().toLowerCase().replaceAll(" ", "-");
 
         if( $(this).find("input[type=checkbox]").prop("checked") ){
           $.each( $(".menu_item_div ul.link li.allergent.show"), function(index, item){
             var allerg = $(item).data("allergy");
-
-            var cheking=$(".menu_item_div ul.link li").css('display') == 'none'
-            console.log(cheking);
-            if(cheking==true)
-            {
-              $(".menu-items").hide();
-            }
-            else{
-
-              $(".menu-items").show();
-
-            }
             console.log( allerg, "allerg" );
             if( typeof(allerg) != undefined ){
               if( allerg.includes(allergy_name) ){
                 $(item).hide().removeClass("showAllerg");
+                $(item).parent(".link").siblings(".menu-items").hide();
                 $(item).siblings('li.show').hide().removeClass("showAllerg");
               }
             }
@@ -366,34 +363,56 @@ get_header();
           return;
         }else{
           $.each($(".chk input[type=checkbox]:checked"), function(index, item){
-            favorite.push($(item).val().toLowerCase());
+            favorite.push($(item).val().toLowerCase().replaceAll(" ", "-"))
           });
-          console.log( favorite, "favorite")
+          console.log( favorite, "favorite");
+          // $(".menu-items").hide();
+          var found = 0;
           $.each( $(".menu_item_div ul.link li.allergent.show"), function(index, item){
             var allerg = $(item).data("allergy");
-            console.log( allerg, "allerg" );
+            // console.log( allerg, "allerg" );
 
-            var cheking=$(".menu_item_div ul.link li").css('display') == 'none'
-            console.log(cheking);
-            if(cheking==true)
-            {
-              $(".menu-items").show();
-            }
-            else{
-
-              $(".menu-items").hide();
-
-            }
-
-            if( typeof(allerg) != undefined ){
-              if( allerg.includes(allergy_name) ){
-                $(item).show().addClass("showAllerg");
-                $(item).siblings('li.show').show().addClass("showAllerg");
+            if( favorite.length > 0 ){
+              for(i=0;i<favorite.length;i++){
+                if( typeof(allerg) != undefined && allerg !== "" ){
+                  if( allerg.includes(favorite[i]) ){
+                    $(item).hide().removeClass("showAllerg");
+                    $(item).parent(".link").siblings(".menu-items").hide();
+                    $(item).siblings('li.show').hide().removeClass("showAllerg");
+                    console.log("found");
+                    found++;
+                  }
+                }
+              }
+              if(found == 0){
+                if( allerg.includes(allergy_name) ){
+                  $(item).show().addClass("showAllerg");
+                  $(item).parent(".link").siblings(".menu-items").show();
+                  $(item).siblings('li.show').show().addClass("showAllerg");
+                }
+              }
+            }else{
+              if( typeof(allerg) != undefined && allerg !== "" ){
+                if( allerg.includes(allergy_name) ){
+                  $(item).show().addClass("showAllerg");
+                  $(item).parent(".link").siblings(".menu-items").show();
+                  $(item).siblings('li.show').show().addClass("showAllerg");
+                }
               }
             }
           });
         }
     });
 
+
+    //clear allergent filters
+    $(document).on("click", ".clear-filter", function(e){
+      e.preventDefault();
+      clearFilter();
+    });
+
+    function clearFilter(){
+      $(".right-part input").prop("checked", false);
+    }
   });
 </script>

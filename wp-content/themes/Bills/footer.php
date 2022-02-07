@@ -85,13 +85,12 @@
                     <div class="mb-3">
                       <label for="formGroupExampleInput" class="form-label">Table Size</label>
                       <select name="party_size" class="form-select form-select-lg mb-3 input" aria-label=".form-select-lg example">
-                        <option value="">Select No. of people</option>
+                     
                         <option value="1">1 people</option>
                         <option value="2">2 people</option>
                         <option value="3">3 people</option>
                         <option value="4">4 people</option>
-                        <option value="5">5 people</option>
-                        <option value="6">6 people</option>
+                       
                       </select>
                       <span class="bor-bottom"></span>
                       <span class="error text-danger"></span>
@@ -112,7 +111,7 @@
                   <div class="col-12 col-sm-3 col-md-6 col-lg-3">
                     <div class="mb-3">
                       <label for="formGroupExampleInput" class="form-label">Time</label>
-                      <select  id="time" class="timepicker form-select form-select-lg mb-3 input" aria-label=".form-select-lg example" name="time">
+                      <!--<select  id="time" class="timepicker form-select form-select-lg mb-3 input" aria-label=".form-select-lg example" name="time">
                         <option value="">Select Time</option>
                         <option value="07:00">7:00pm</option>
                         <option value="07:15">7:15pm</option>
@@ -127,8 +126,8 @@
                         <option value="12:00">12:00pm</option>
                         <option value="12:15">12:15pm</option>
                         <option value="13:00">13:00pm</option>
-                    </select>
-                    <!-- <input type="text" id="time" name="time" class="form-select input"/> -->
+                    </select> -->
+                    <input type="text" name="time" class="form-select input timedrop"/> 
 
                       <span class="bor-bottom"></span>
                       <span class="error text-danger"></span>
