@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
 
-	$('#time').timepicker({
+	$('.timedrop').timepicker({
         timeFormat: 'HH:mm',
         interval: 15,
         minTime: '10',

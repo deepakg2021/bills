@@ -9,7 +9,7 @@ jQuery(document).ready(function($){
 			var formattedDate = new Date( $( formID + " #popupDatepicker input" ).val() );
 			
 			rid = jQuery( formID + " select[name=location]" ).find(":selected").val();
-			//localStorage.setItem("formID", formID);
+			localStorage.setItem("formID", formID);
 
 			party_size = $( formID + " select[name=party_size]" ).val();
 			time = "T"+$( formID + " select[name=time]" ).val();
