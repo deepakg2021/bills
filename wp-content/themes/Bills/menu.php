@@ -141,7 +141,7 @@ get_header();
     <div class="container">
       <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-          <div class="stp-box">
+          <div class="stp-box_custom">
             <div id="contentArea">
                 <?php            
                 $args2 = array(
@@ -166,7 +166,7 @@ get_header();
                     foreach($arr as $ar) 
                     {
                       ?>
-                      <div class="menu_item_div menu<?php echo $value->ID; ?>" >
+                      <div class="stp-box menu_item_div menu<?php echo $value->ID; ?>" >
                       <div data-id="<?php echo $value->ID; ?>" class="menu-items title" ><?php echo get_term( $ar )->name; ?></div>
                       <?php 
                         $query_term = get_posts( array(
@@ -179,7 +179,7 @@ get_header();
                             )
                           )
                         )); ?>
-                       <ul class="link">
+                       <ul class="link link_target">
                           <?php
                             //echo '<pre>';
                             //print_r($query_term);
@@ -257,7 +257,15 @@ get_header();
     $(".menu"+a+" .link li").show().addClass("show");
     $(".menu-link1[data-menu-id="+a+"]").addClass("active_menu_id");
 
-    
+    // var countLi = $(".link_target").find(".show").length;
+    // console.log(countLi);
+
+    // $(".menu-link1[data-menu-id="+a+"]").each(function(){
+    //   console.log(this);
+    //   legnth = $('.show').length;
+    //   console.log(length);
+    // });
+
 
     $(".menu-link1").click( function(e)
     {
@@ -265,12 +273,21 @@ get_header();
       $(this).addClass("active_menu_id");
       e.preventDefault();
       var data_id = $(this).data("menu-id");
-      console.log(data_id);
+      //console.log(data_id);
       // $(".menu-items").hide();
       // $(".menu-items[data-id="+data_id+"] ").show();
       $(".menu_item_div").hide();
       $(".menu"+data_id).show();
-      $(".menu"+data_id+" .link li").show().addClass("show");
+      //$(".menu"+data_id+" .link li").show().addClass("show");
+       if( $('.second_link').find(".active_menu_id").length > 0 ) {
+        var data_menu_id = $('.second_link').find(".active_menu_id").data("attr").toLowerCase();   
+        console.log(data_menu_id);     
+        $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").show().addClass("show");
+       }
+        // countClass = $(".stp-box").find("li.show").length;
+        // if(countClass < 1 ) {
+        //  alert(countClass);
+        // }
     });
 
     
@@ -288,16 +305,29 @@ get_header();
       $(this).addClass("active_menu_id");
       var data_id = $(this).data("attr").toLowerCase();
       console.log(data_id);
-      if( $(document).find(".active_menu_id").length > 0 )
+      if( $('.first_link').find(".active_menu_id").length > 0 )
       {
-        var data_menu_id = $(document).find(".active_menu_id").data("menu-id");
-        console.log(data_menu_id);
+        // var data_menu_id = $(document).find(".active_menu_id").data("menu-id");
+        var data_menu_id = $('.first_link').find(".active_menu_id").data("menu-id");
+        //console.log(data_menu_id);
         //menu item 1 is selected
         $("#contentArea .link li").hide().removeClass("show"); 
         $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").show().addClass("show");
 
+        // countClass = $(".stp-box").find(".show").length;
+        // if(countClass < 1 ) {
+        //   $('.stp-box').hide();
+        // }
+
+       $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").each(function(){
+
+           legnth = $('.show',this).length;
+           console.log(length);
+        });
+
 
       }
+
 
 
       //$("#contentArea .link li[data-id="+data_id+"]").show();
