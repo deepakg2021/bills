@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
 			localStorage.setItem("formID", formID);
 
 			party_size = $( formID + " select[name=party_size]" ).val();
-			time = "T"+$( formID + " select[name=time]" ).val();
+			time = "T"+$( formID + " input[name=time]" ).val();
 			temp_time = $( formID + " select[name=time]" ).val();
 
 			$.each( input, function(index, element){
@@ -95,17 +95,15 @@ jQuery(document).ready(function($){
 			}
 			var y = new Date().getFullYear();
 			if(formattedDate.getFullYear() >= new Date().getFullYear()){
-				
 				var y = formattedDate.getFullYear();
 			}
-			
 			let start_date_time = y + "-" + m + "-" + d ;
-			
 			$.ajax({
 				type 		: 'post',
-				dataType : 'json',
+				dataType 	: 'json',
 				url  		: SITE_URL+'/wp-admin/admin-ajax.php',
-				data 		: {'action': 'searchLocationAjax','hotel_id': rid, 'start_date': start_date_time, 'party_size': party_size, 'time': time },
+				data 		: {
+								'action': 'searchLocationAjax','hotel_id': rid, 'start_date': start_date_time, 'party_size': party_size, 'time': time },
 				success 	: function(response){
 					var nextSlide = '';
 					console.log( response.available_time_slots );

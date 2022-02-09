@@ -1135,46 +1135,6 @@ add_action( 'wp_ajax_nopriv_location_load_more', 'AllLocations' );
 add_action('wp_ajax_get_location_taxonomy_ajax','AllLocations');
 add_action('wp_ajax_nopriv_get_location_taxonomy_ajax', 'AllLocations');
 
-// Ajax function searching for location 
-/*  function get_location_taxonomy_ajax()
-{
-    //searching code here return the posts html
-    extract($_POST);
-	
-	$Search_latitude = $_REQUEST['lat'];
-    $Search_longitude = $_REQUEST['lng'];
-   
-   
-    $terms = get_terms( array(
-        'taxonomy'      => 'location',
-        'hide_empty'    => false
-    ) );
-
-   
-
-    $data = [];
-    $result = [];
-    if ( ! is_wp_error( $terms ) ) 
-    {
-        foreach ( $terms as $term ) :
-            $address = get_field('address', $term);
-            //print_r($address);
-            if( $address['lat'] != '' and $address['lng'] != ''){
-                $a[] = $term->term_id;
-                $b[] = $address['lat']."##".$address['lng'];
-                $c[]=array_combine($a,$b);
-            } 
-            // echo "<pre>"; print_r($address);
-        endforeach;
-    }else{
-        $c[] = null;
-    }
-    // print_r($c);
-    echo json_encode( end($c) );
-    die();
-
-}  */
-
 
 function AllLocations(){ 
 
@@ -1194,7 +1154,8 @@ function AllLocations(){
       'hide_empty' => false,
       'number' => $nextCount,
     ]);                             
-$count = 0;
+	$count = 0;
+	$newMiles = 0;
     foreach($location_terms as $terms) {
 		$address = get_field('address', $terms);
 		
@@ -1204,7 +1165,7 @@ $count = 0;
 		$lat = $address['lat'];
 		$lang = $address['lng'];
 		
-	  
+		
 	  
 		$theta = $slang - $lang;
 		$dist = sin(deg2rad($slat)) * sin(deg2rad($lat)) +  cos(deg2rad($slat)) * cos(deg2rad($lat)) * cos(deg2rad($theta));
@@ -1214,6 +1175,7 @@ $count = 0;
 	  
 	  // if($miles<=26){
 		 //  $count = $count+1;
+		
       ?>
 
         <ul>
@@ -1242,6 +1204,70 @@ $count = 0;
 	
 	die;
 }
+
+
+add_action('wp_ajax_get_nearest_location_ajax','getNearestBillLocations');
+add_action('wp_ajax_nopriv_get_nearest_location_ajax', 'getNearestBillLocations');
+
+
+function getNearestBillLocations(){ 
+
+    global $wp_query;
+	$slat = $_REQUEST['lat'];
+    $slang = $_REQUEST['lng'];
+    $type = $_REQUEST['type'];
+	
+    $location_terms = get_terms([
+      'taxonomy' => 'location',
+      'hide_empty' => false,
+      'number' => $nextCount,
+    ]);                             
+	$count = 0;
+	$newMiles = 0;
+    foreach($location_terms as $terms) {
+		$lat = $address['lat'];
+		$lang = $address['lng'];
+		
+		$args = array(
+		'post_type' => 'restaurant',
+		'tax_query' => array(
+			array(
+			'taxonomy' => 'location',
+			'field' => 'term_id',
+			'terms' => $terms->term_id
+			 )
+		  )
+		);
+		$query = new WP_Query( $args );
+		
+	    if( $query->have_posts() ) :
+			$rid = get_field( 'rid', get_the_ID() );
+		else :
+			$rid = 0;
+        endif;
+	  
+		$theta = $slang - $lang;
+		$dist = sin(deg2rad($slat)) * sin(deg2rad($lat)) +  cos(deg2rad($slat)) * cos(deg2rad($lat)) * cos(deg2rad($theta));
+		$dist = acos($dist);
+		$dist = rad2deg($dist);
+		$miles = $dist * 60 * 1.1515; 	
+	  
+	 
+		 if($newMiles==0){
+			 $newMiles = $miles;
+			 $rid = $rid;
+		 }else{
+			 if($miles < $newMiles){
+				$newMiles = $miles;
+				$rid = $rid;
+			 }
+		 }
+       } 
+	
+	echo $rid;	
+	die;
+}
+
 
 function remove_admin_login_header() {
     remove_action('wp_head', '_admin_bar_bump_cb');
