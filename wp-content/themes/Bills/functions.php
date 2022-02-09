@@ -1224,7 +1224,9 @@ function getNearestBillLocations(){
     ]);                             
 	$count = 0;
 	$newMiles = 0;
+	$rid = 0;
     foreach($location_terms as $terms) {
+		$address = get_field('address', $terms);
 		$lat = $address['lat'];
 		$lang = $address['lng'];
 		
@@ -1241,9 +1243,13 @@ function getNearestBillLocations(){
 		$query = new WP_Query( $args );
 		
 	    if( $query->have_posts() ) :
-			$rid = get_field( 'rid', get_the_ID() );
+			while( $query->have_posts() ): $query->the_post();
+
+                $rid = get_field( 'rid', get_the_ID() );
+            endwhile;
 		else :
-			$rid = 0;
+			
+			$rid = $rid;
         endif;
 	  
 		$theta = $slang - $lang;
@@ -1252,17 +1258,20 @@ function getNearestBillLocations(){
 		$dist = rad2deg($dist);
 		$miles = $dist * 60 * 1.1515; 	
 	  
-	 
+	
 		 if($newMiles==0){
-			 $newMiles = $miles;
-			 $rid = $rid;
+			  $newMiles = $miles;
+			  $rid = $rid;
 		 }else{
+			 
 			 if($miles < $newMiles){
 				$newMiles = $miles;
 				$rid = $rid;
 			 }
 		 }
        } 
+	
+	
 	
 	echo $rid;	
 	die;

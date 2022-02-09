@@ -588,8 +588,8 @@ function location_call_ajax( lat, lng,stype )
 		success: function(data)
 		{
 			if(stype=='bybooking'){
-				
 				jQuery('.locationSelect option[value='+data+']').attr('selected','selected');
+				jQuery('#choose-bill-restaurent .btn-close').trigger('click');
 			}else{
 				jQuery('.searchArea').hide();
 				jQuery('.nearest-bill-restorent').show();
