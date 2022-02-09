@@ -1,6 +1,9 @@
 jQuery(document).ready(function($) {
-
-	$('#time').timepicker({
+	var today = new Date();
+	var expiry = new Date(today.getTime() + 30 * 24 * 3600 * 1000); // plus 30 days
+	
+	
+	$('.timedrop').timepicker({
         timeFormat: 'HH:mm',
         interval: 15,
         minTime: '10',
@@ -31,6 +34,82 @@ jQuery(document).ready(function($) {
 		format: "M dd, yyyy",
 		todayHighlight: true,
 		startDate: '-0m',
+		
+	});
+	
+	
+	jQuery('#wt-cli-accept-all-btn').click(function(){
+		jQuery('#wt-cli-accept-all-btn').addClass("acceptcookie");
+	});
+	
+	jQuery("#seah_bil_resto_btn").click(function() {
+		getCurrentLocation('bysearch');
+	});
+	jQuery("#nearest_bill_restro_btn").click(function() {
+		getCurrentLocation('bybooking');
+		
+		
+	});
+	
+	jQuery('#nearest_biil_backbtn').on('click',function(){
+		jQuery('.searchArea').show();
+		jQuery('.nearest-bill-restorent').hide();
+		jQuery('#location_key').val('');
+	});
+	
+	jQuery("#search_loc").click(function()
+    {
+        jQuery('.location_errorMsg').html('');
+        location_key = jQuery('#location_key').val();
+        var lat = jQuery("#lat_postal").val(); 
+        var lng = jQuery("#lng_postal").val();
+        if(location_key == '') {
+            jQuery(".location_errorMsg").html('Please enter something');
+        }
+        else if(lat == '' || lng == '') {
+           jQuery(".location_errorMsg").html('Please select something');
+        }
+        else{
+            location_call_ajax( lat, lng,'bysearch' );
+        }
+        
+    });
+	
+	
+	jQuery(".location_more").click(function(){
+    	var count = jQuery(this).attr('data-count');
+    	var tCount = jQuery(this).attr('data-tcount');
+    	var nextCount = parseInt(count)+3;
+    	var lat = jQuery('#lat_postal').val();
+    	var lang = jQuery('#lng_postal').val();
+    	
+  	
+  	
+      jQuery.ajax({
+        type : "POST",       
+        url: SITE_URL+"/wp-admin/admin-ajax.php",
+        data : {action: "location_load_more",nextCount:count,lat:lat,lng:lang,type:'loadmore'},
+
+        success: function(response) {
+			jQuery('.location_more').attr('data-count',nextCount);
+			jQuery('.term_box').html(response);
+			  if(tCount < count){
+				  jQuery('.location_more').hide();
+			  }	  
+        },
+        error: function (jqXHR, textStatus, errorThrown) {        
+              
+        }
+      });
+    });
+	
+	
+	
+	
+	
+	$('.book-table-btn').on('click',function(){
+		
+		$('#choose-bill-restaurent_model').trigger('click');
 		
 	});
 	
@@ -422,4 +501,103 @@ jQuery(document).ready(function($) {
 
 });
 
+function setCookie(name, value){
+    document.cookie=name + "=" + escape(value) + "; path=/; expires=" + expiry.toGMTString();
+}
+function goHome(){ 
+	window.location.href=SITE_URL; 
+}
 
+function client_token_generate() {
+	jQuery.ajax({
+		type:"POST",
+		url: SITE_URL+"/wp-admin/admin-ajax.php",
+		data: 
+		{
+			action: "client_token_gen",               
+		},
+		success: function(results)
+		{
+			console.log(results);
+		},             
+	});
+}
+
+function storeValues(form){ 
+	var cookie =jQuery("#wt-cli-accept-all-btn").hasClass("acceptcookie");
+	if(cookie == true){
+		var input = jQuery("#detailsForm .input");
+		var email_address = jQuery("#email_address1").val();
+		var last_name = jQuery("#last_name").val();
+		var contact = jQuery("#contact").val();
+		var first_name = jQuery("#first_name").val();
+		setCookie("first_name", first_name);
+		setCookie("contact", contact);
+		setCookie("email_address", email_address);
+		setCookie("last_name", last_name);
+		return true;
+	}
+}
+   
+function getCookie(name){
+  var re = new RegExp(name + "=([^;]+)");
+  var value = re.exec(document.cookie);
+  return (value != null) ? unescape(value[1]) : null;
+}
+
+function getcookiesvalues(){
+	var first_name = getCookie("first_name");
+	var contact = getCookie("contact");
+	var last_name = getCookie("last_name");
+	var email_address = getCookie("email_address");
+	document.querySelector('#first_name').value= first_name; 
+	document.querySelector('#contact').value= contact; 
+	document.querySelector('#last_name').value= last_name; 
+	document.querySelector('#email_address1').value= email_address;     
+}
+
+function getCurrentLocation(stype){	
+		 
+	if (navigator.geolocation) {     
+		navigator.geolocation.getCurrentPosition(function(position){
+			myLatitude = position.coords.latitude;
+			myLongitude = position.coords.longitude;
+			
+			location_call_ajax( myLatitude, myLongitude,stype );
+			
+		});
+	} 
+	else { 
+		alert("Geolocation is not supported by this browser.");
+	}  
+}		
+
+function location_call_ajax( lat, lng,stype )
+{
+	
+	if(stype=='bybooking'){
+		var data = {'action': 'get_nearest_location_ajax', lat:lat, lng:lng,type:stype};	
+	}else{
+		var data = {'action': 'get_location_taxonomy_ajax', lat:lat, lng:lng,type:stype};
+	}
+
+	jQuery.ajax({
+		type: 'POST',
+		url: SITE_URL+"/wp-admin/admin-ajax.php",
+		data: data, // form data
+		success: function(data)
+		{
+			if(stype=='bybooking'){
+				
+				jQuery('.locationSelect option[value='+data+']').attr('selected','selected');
+			}else{
+				jQuery('.searchArea').hide();
+				jQuery('.nearest-bill-restorent').show();
+				jQuery('.term_box').html(data);
+			}
+			
+			
+			
+		}
+	});
+}       

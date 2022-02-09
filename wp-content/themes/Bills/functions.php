@@ -488,9 +488,9 @@ if( function_exists('acf_add_options_page') ) {
         extract( $_POST );
 		$url = 'availability/'.$hotel_id;
 		$method = 'GET';   
-        $token = 'eaf02efe-87fd-4964-a233-f0f7bf7f775a1';             		    
+
 		$payload = 'start_date_time='.$start_date.$time.'&party_size='.$party_size;
-		$result = executeCurl($url,$method,$token,$payload);
+		$result = executeCurl($url,$method,$payload);
         $bills_filter_results = json_decode($result,true);
         $_SESSION['bills_filter_results'] = $bills_filter_results;
         $max_slot=count( $_SESSION['bills_filter_results']['times'] );        
@@ -773,8 +773,8 @@ function custom_bills_bookings_column( $column, $post_id ) {
 if( function_exists('acf_add_options_page') ) {
     
     acf_add_options_page(array(
-        'page_title'    => 'Theme General Settings',
-        'menu_title'    => 'Theme Settings',
+        'page_title'    => 'Theme Settings',
+        'menu_title'    => 'Theme options',
         'menu_slug'     => 'theme-general-settings',
         'capability'    => 'edit_posts',
         'redirect'      => false
@@ -1083,14 +1083,13 @@ $ch=curl_init($bills_google_search_url);
   }
   
   
-function executeCurl($url,$method,$token,$payload){
+function executeCurl($url,$method,$payload){
 
-	echo $_SESSION['client_access_token']; 
     if(isset($_SESSION['client_access_token'])){
     $token = $_SESSION['client_access_token'];           
     }
     else{          
-    $token = 'eaf02efe-87fd-4964-a233-f0f7bf7f775a1'; 
+    $token = 'eaf02efe-87fd-4964-a233-f0f7bf7f775a'; 
     }    
 	$apiURL = "https://platform.otqa.com/";
 	$apiFullURL = $apiURL.''.$url;
@@ -1113,18 +1112,12 @@ function executeCurl($url,$method,$token,$payload){
 	$result=curl_exec($ch);
     $bill_filter_result = json_decode($result,true);
     $error_msg = isset($bill_filter_result['errors'])?$bill_filter_result['errors']:'';
-    echo $error_msg;    
+    //echo $error_msg;    
     if(!empty($error_msg)){
-        client_token_gen();
-        print_r($results); 
-        $client_access_token = $results->access_token;   
-        $_SESSION['client_access_token_new'] = $client_access_token;
-        //echo $results;
-        echo 'worinh';                                        
+        client_token_gen();                                             
     }   
 	$err = curl_error($ch);	
 	curl_close($ch);
-    die;
 	return $result;
 	
 }		
@@ -1141,46 +1134,6 @@ add_action( 'wp_ajax_nopriv_location_load_more', 'AllLocations' );
 
 add_action('wp_ajax_get_location_taxonomy_ajax','AllLocations');
 add_action('wp_ajax_nopriv_get_location_taxonomy_ajax', 'AllLocations');
-
-// Ajax function searching for location 
-/*  function get_location_taxonomy_ajax()
-{
-    //searching code here return the posts html
-    extract($_POST);
-	
-	$Search_latitude = $_REQUEST['lat'];
-    $Search_longitude = $_REQUEST['lng'];
-   
-   
-    $terms = get_terms( array(
-        'taxonomy'      => 'location',
-        'hide_empty'    => false
-    ) );
-
-   
-
-    $data = [];
-    $result = [];
-    if ( ! is_wp_error( $terms ) ) 
-    {
-        foreach ( $terms as $term ) :
-            $address = get_field('address', $term);
-            //print_r($address);
-            if( $address['lat'] != '' and $address['lng'] != ''){
-                $a[] = $term->term_id;
-                $b[] = $address['lat']."##".$address['lng'];
-                $c[]=array_combine($a,$b);
-            } 
-            // echo "<pre>"; print_r($address);
-        endforeach;
-    }else{
-        $c[] = null;
-    }
-    // print_r($c);
-    echo json_encode( end($c) );
-    die();
-
-}  */
 
 
 function AllLocations(){ 
@@ -1201,7 +1154,8 @@ function AllLocations(){
       'hide_empty' => false,
       'number' => $nextCount,
     ]);                             
-$count = 0;
+	$count = 0;
+	$newMiles = 0;
     foreach($location_terms as $terms) {
 		$address = get_field('address', $terms);
 		
@@ -1211,7 +1165,7 @@ $count = 0;
 		$lat = $address['lat'];
 		$lang = $address['lng'];
 		
-	  
+		
 	  
 		$theta = $slang - $lang;
 		$dist = sin(deg2rad($slat)) * sin(deg2rad($lat)) +  cos(deg2rad($slat)) * cos(deg2rad($lat)) * cos(deg2rad($theta));
@@ -1221,6 +1175,7 @@ $count = 0;
 	  
 	  // if($miles<=26){
 		 //  $count = $count+1;
+		
       ?>
 
         <ul>
@@ -1249,6 +1204,70 @@ $count = 0;
 	
 	die;
 }
+
+
+add_action('wp_ajax_get_nearest_location_ajax','getNearestBillLocations');
+add_action('wp_ajax_nopriv_get_nearest_location_ajax', 'getNearestBillLocations');
+
+
+function getNearestBillLocations(){ 
+
+    global $wp_query;
+	$slat = $_REQUEST['lat'];
+    $slang = $_REQUEST['lng'];
+    $type = $_REQUEST['type'];
+	
+    $location_terms = get_terms([
+      'taxonomy' => 'location',
+      'hide_empty' => false,
+      'number' => $nextCount,
+    ]);                             
+	$count = 0;
+	$newMiles = 0;
+    foreach($location_terms as $terms) {
+		$lat = $address['lat'];
+		$lang = $address['lng'];
+		
+		$args = array(
+		'post_type' => 'restaurant',
+		'tax_query' => array(
+			array(
+			'taxonomy' => 'location',
+			'field' => 'term_id',
+			'terms' => $terms->term_id
+			 )
+		  )
+		);
+		$query = new WP_Query( $args );
+		
+	    if( $query->have_posts() ) :
+			$rid = get_field( 'rid', get_the_ID() );
+		else :
+			$rid = 0;
+        endif;
+	  
+		$theta = $slang - $lang;
+		$dist = sin(deg2rad($slat)) * sin(deg2rad($lat)) +  cos(deg2rad($slat)) * cos(deg2rad($lat)) * cos(deg2rad($theta));
+		$dist = acos($dist);
+		$dist = rad2deg($dist);
+		$miles = $dist * 60 * 1.1515; 	
+	  
+	 
+		 if($newMiles==0){
+			 $newMiles = $miles;
+			 $rid = $rid;
+		 }else{
+			 if($miles < $newMiles){
+				$newMiles = $miles;
+				$rid = $rid;
+			 }
+		 }
+       } 
+	
+	echo $rid;	
+	die;
+}
+
 
 function remove_admin_login_header() {
     remove_action('wp_head', '_admin_bar_bump_cb');
@@ -1308,9 +1327,14 @@ add_action("wp_ajax_nopriv_client_token_gen", "client_token_gen");
                     );  
         curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);        
         curl_setopt($ch, CURLOPT_POSTFIELD);
-        $results=curl_exec($ch);
+        $result=curl_exec($ch);
         $err = curl_error($ch);
         curl_close($ch);
-        return $results;       
+        $doc_result = json_decode($result,true);
+        //print_r($doc_result);
+        $client_access_token = $doc_result['access_token']; 
+        $_SESSION['client_access_token'] = $client_access_token; 
+        echo $client_access_token;     
+        return $client_access_token;       
     } 
 

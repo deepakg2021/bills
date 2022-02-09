@@ -97,77 +97,18 @@ get_header(); ?>
 
 <script type="text/javascript">
   jQuery( document ).ready(function() {
-	jQuery('#nearest_biil_backbtn').on('click',function(){
-		jQuery('.searchArea').show();
-		jQuery('.nearest-bill-restorent').hide();
-		jQuery('#location_key').val('');
-	});
+	
 	
 	
 	
 	let latLngs = null;
-    jQuery("#search_loc").click(function()
-    {
-        jQuery('.location_errorMsg').html('');
-        location_key = jQuery('#location_key').val();
-        var lat = jQuery("#lat_postal").val(); 
-        var lng = jQuery("#lng_postal").val();
-        if(location_key == '') {
-            jQuery(".location_errorMsg").html('Please enter something');
-        }
-        else if(lat == '' || lng == '') {
-           jQuery(".location_errorMsg").html('Please select something');
-        }
-        else{
-            call_ajax( lat, lng );
-        }
-        
-    });
+    
 	
 	
 	
-    jQuery(".location_more").click(function(){
-    	var count = jQuery(this).attr('data-count');
-    	var tCount = jQuery(this).attr('data-tcount');
-    	var nextCount = parseInt(count)+3;
-    	var lat = jQuery('#lat_postal').val();
-    	var lang = jQuery('#lng_postal').val();
-    	
-  	
-  	
-      jQuery.ajax({
-        type : "POST",       
-        url: SITE_URL+"/wp-admin/admin-ajax.php",
-        data : {action: "location_load_more",nextCount:count,lat:lat,lng:lang,type:'loadmore'},
+    
 
-        success: function(response) {
-			jQuery('.location_more').attr('data-count',nextCount);
-			jQuery('.term_box').html(response);
-			  if(tCount < count){
-				  jQuery('.location_more').hide();
-			  }	  
-        },
-        error: function (jqXHR, textStatus, errorThrown) {        
-              
-        }
-      });
-    });
-
-     jQuery("#seah_bil_resto_btn").click(function() {
-		 
-		if (navigator.geolocation) {     
-			navigator.geolocation.getCurrentPosition(function(position){
-				myLatitude = position.coords.latitude;
-				myLongitude = position.coords.longitude;
-				
-				call_ajax( myLatitude, myLongitude );
-				
-			});
-		} 
-		else { 
-			alert("Geolocation is not supported by this browser.");
-		}   
-     });
+    
     
   });
   

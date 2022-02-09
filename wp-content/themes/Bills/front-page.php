@@ -41,24 +41,22 @@ get_header(); ?>
                           <span>Enter Location</span>
                           <ul class="drop">
                               <!-- <li class="selected"><a>Enter Location</a></li> -->
-                              <?php 
-                               $_menu_args=array(
-                                 'post_type' => 'restaurant',
-                                 'post_status' => 'publish',
-                                 'order' => 'DESC',
-                                 'orderby' => 'title'
-                               );
-                               $_menu_posts=new WP_Query($_menu_args);
-                               while($_menu_posts->have_posts())
-                               { 
-                                   $_menu_posts->the_post();
-                                   $rid = get_field( 'rid', get_the_ID() );
-                               ?>
+							  
+							  <?php 
+								  $locations = getLocations();
+								  if( !empty($locations) ){
+									//print_r($locations);
+									foreach ($locations as $rid => $title) { ?>
+									  
+									  <li data-value="<?= $rid ?>" ><a><?= $title ?></a></li>
+									 
+								<?php
+									}
+								  }
 
-                                    <li data-value="<?= $rid ?>" ><a><?php the_title(); ?></a></li>
-                               <?php 
-                               } 
-                               wp_reset_postdata() ?>
+								?>
+							  
+                              
                              
                           </ul>
                       </div>
@@ -119,7 +117,7 @@ get_header(); ?>
 
                     </select> -->
 
-                    <input type="text" id="time" name="time" class="form-select input"/>
+                    <input type="text" name="time" class="form-select input timedrop"/>
                    
                   </div>
                   <div class="col-12 col-md-1">
