@@ -4695,7 +4695,7 @@ right:0;
 top:100%;
 z-index:2;
 border: 0.2px solid var(--select-border-color);
-height: 153px;
+max-height: 153px;
     -ms-overflow-style: none;
     scrollbar-width: none;
     overflow-y: scroll;
@@ -7994,7 +7994,7 @@ section.booking-mid-sec .right-part .mb-3 {
       line-height: 19px;
   }
   .wrap-drop .drop{
-    height: 120px;
+    max-height: 120px;
   }
   .wrap-drop span{
     font-size: 13px;
@@ -9912,7 +9912,7 @@ section.booking-mid-sec .right-part .forminator-row span.forminator-checkbox-box
       line-height: 21px;
   }
   .wrap-drop .drop {
-      height: 164px;
+      max-height: 164px;
   }
   .map-sec .map-content-box {
       position: initial;
