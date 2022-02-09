@@ -310,7 +310,7 @@
 </div>
 <!-- Booking Process Fourth Model END --> 
 <!-- Booking Process choose bill restaurent Model --> 
-<button id="choose-bill-restaurent_model" data-bs-toggle="modal" data-bs-target="#choose-bill-restaurent"></button>
+<button id="choose-bill-restaurent_model" data-bs-toggle="modal" data-bs-target="#choose-bill-restaurent" style="display:none;"></button>
 <div class="modal fade choose-bill-restaurent" id="choose-bill-restaurent" tabindex="-1" aria-labelledby="choose-bill-restaurentTitle"  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 	<div class="modal-content">
