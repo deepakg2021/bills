@@ -286,6 +286,7 @@ get_header();
        {
         var data_menu_id = $('.second_link').find(".active_menu_id").data("attr").toLowerCase();   
         console.log(data_menu_id);     
+        $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").parent(".link").show();
         $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").show().addClass("show");
         $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").parent(".link").siblings(".menu-items").show();
        }
@@ -298,7 +299,9 @@ get_header();
     
     var c='Food';
     //menu item 1 is selected
+    $("#contentArea .link").hide();
     $("#contentArea .link li").hide().removeClass("show"); 
+    $(".menu"+a+" .link li[data-id="+b+"]").parent(".link").show();
     $(".menu"+a+" .link li[data-id="+b+"]").show().addClass("show");
     $(".menu"+a+" .link li[data-id="+b+"]").parent(".link").siblings(".menu-items").show();
     $(".menu_link2[data-attr="+c+"]").addClass("active_menu_id")
@@ -319,8 +322,10 @@ get_header();
         //console.log(data_menu_id);
         //menu item 1 is selected
         $("#contentArea .link li").hide().removeClass("show"); 
+        $("#contentArea .link").hide(); 
         $("#contentArea .menu-items").hide(); 
         $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").show().addClass("show");
+        $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").parent(".link").show();
         $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").parent(".link").siblings(".menu-items").show();
 
         // countClass = $(".stp-box").find(".show").length;
@@ -333,30 +338,31 @@ get_header();
            legnth = $('.show',this).length;
            console.log(length);
         });
-
-
       }
-
-
-
       //$("#contentArea .link li[data-id="+data_id+"]").show();
     });
 
-
-
     $(".chk").change(function(){
+        var found = 0;
         var favorite = [];
         var allergy_name = $(this).find("input[type=checkbox]").val().toLowerCase().replaceAll(" ", "-");
 
-        if( $(this).find("input[type=checkbox]").prop("checked") ){
-          $.each( $(".menu_item_div ul.link li.allergent.show"), function(index, item){
+
+       if( $(this).find("input[type=checkbox]").prop("checked") )
+        {
+          $.each( $(".menu_item_div ul.link li.allergent.show"), function(index, item)
+          {
             var allerg = $(item).data("allergy");
+            //console.log(data_id);
             console.log( allerg, "allerg" );
             if( typeof(allerg) != undefined ){
               if( allerg.includes(allergy_name) ){
                 $(item).hide().removeClass("showAllerg");
-                $(item).parent(".link").siblings(".menu-items").hide();
+                //$(item).parent(".link").siblings(".menu-items").hide();
+
+                
                 $(item).siblings('li.show').hide().removeClass("showAllerg");
+                $(item).siblings('li.show').parent(".link").hide();
               }
             }
           });
@@ -365,38 +371,50 @@ get_header();
           $.each($(".chk input[type=checkbox]:checked"), function(index, item){
             favorite.push($(item).val().toLowerCase().replaceAll(" ", "-"))
           });
-          console.log( favorite, "favorite");
           // $(".menu-items").hide();
-          var found = 0;
+          
           $.each( $(".menu_item_div ul.link li.allergent.show"), function(index, item){
             var allerg = $(item).data("allergy");
             // console.log( allerg, "allerg" );
 
             if( favorite.length > 0 ){
               for(i=0;i<favorite.length;i++){
+                console.log( favorite[i], i);
+                console.log(  allerg, "allerg" );
                 if( typeof(allerg) != undefined && allerg !== "" ){
                   if( allerg.includes(favorite[i]) ){
                     $(item).hide().removeClass("showAllerg");
-                    $(item).parent(".link").siblings(".menu-items").hide();
+                    //$(item).parent(".link").siblings(".menu-items").hide();
                     $(item).siblings('li.show').hide().removeClass("showAllerg");
+                    $(item).siblings('li.show').parent(".link").hide();
                     console.log("found");
-                    found++;
+                    i = favorite.length; //to break the loop after found once
+                  }else{
+                     $(item).show().addClass("showAllerg");
+                    // $(item).parent(".link").siblings(".menu-items").show();
+                     $(item).siblings('li.show').show().addClass("showAllerg");
+                     $(item).siblings('li.show').parent(".link").show();
+                     // found--;
                   }
+                  found++;
                 }
               }
               if(found == 0){
+                console.log(found, "found");
                 if( allerg.includes(allergy_name) ){
                   $(item).show().addClass("showAllerg");
-                  $(item).parent(".link").siblings(".menu-items").show();
+                 // $(item).parent(".link").siblings(".menu-items").show();
                   $(item).siblings('li.show').show().addClass("showAllerg");
+                  $(item).siblings('li.show').parent(".link").show();
                 }
               }
             }else{
               if( typeof(allerg) != undefined && allerg !== "" ){
                 if( allerg.includes(allergy_name) ){
                   $(item).show().addClass("showAllerg");
-                  $(item).parent(".link").siblings(".menu-items").show();
+                 // $(item).parent(".link").siblings(".menu-items").show();
                   $(item).siblings('li.show').show().addClass("showAllerg");
+                  $(item).siblings('li.show').parent(".link").show();
                 }
               }
             }

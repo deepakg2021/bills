@@ -77,7 +77,7 @@
 </header>
 <?php 
 $bodyClass = 'inner-page';	
-$bookATableBtn = '<a href="javascript:void(0)" class="book-table-btn" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable">Book A Table</a>';
+$bookATableBtn = '<a href="javascript:void(0)" class="book-table-btn" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable" >Book A Table</a>';
 if (is_front_page()) { 
 	$bodyClass = '';
 	$bookATableBtn = '';
@@ -87,5 +87,5 @@ if (is_front_page()) {
 }
 
 ?>
-<body class="<?php echo $bodyClass ?>">
+<body class="<?php echo $bodyClass ?>" onload="getcookiesvalues();">
 <?php echo $bookATableBtn; ?>
