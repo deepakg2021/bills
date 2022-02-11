@@ -132,7 +132,11 @@ $banner_tittle = get_field('banner_tittle');
               $url = wp_get_attachment_url( get_post_thumbnail_id($_feature_post->ID) , 'bill-featured'); 
           ?>
           <div class="col-12 col-sm-8 col-md-12 col-lg-8">
-            <div class="large-box">
+            <?php 
+              $bg =  get_field("bg_color"); 
+              
+            ?>
+            <div class="large-box" style="background: <?php echo $bg['background_colors']; ?>">
               <div class="row  align-items-center">
                 <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                  <img src="<?php echo $url; ?>" alt=""  />  
@@ -142,6 +146,15 @@ $banner_tittle = get_field('banner_tittle');
                   <div class="inner">
                     <h2><?php the_title(); ?></h2>
                     <?php the_excerpt(); ?>
+                    <style type="text/css">
+                      .event-offers-section .box-section .large-box .inner a.btn:hover{
+                        border-color: <?php echo $bg['cta']; ?>;
+                      }
+                      .event-offers-section .box-section .large-box .inner a.btn:hover::before{
+                        background: <?php echo $bg['cta']; ?>;
+                      }
+
+                    </style>
                     <a href="<?php the_permalink(); ?>" class="btn"><span>Find Out More</span></a>
                   </div>
                 </div>
@@ -167,12 +180,25 @@ $banner_tittle = get_field('banner_tittle');
               $url = wp_get_attachment_url( get_post_thumbnail_id($_spacial_post->ID), 'bill-bookings' ); 
           ?>
           <div class="col-12 col-sm-4 col-md-12 col-lg-4">
-            <div class="box">
+            <?php 
+              $bg =  get_field("bg_color"); 
+              
+            ?>
+            <div class="box" style="background: <?php echo $bg['background_colors']; ?>">
             <img src="<?php echo $url; ?>" alt=""  /> 
               <?php //the_post_thumbnail('bill-bookings'); ?>
               <div class="inner">
                 <div class="title"><?php the_title(); ?></div>
                 <?php the_excerpt(); ?>
+                <style type="text/css">
+                    .event-offers-section .box-section .box .inner a.btn:hover{
+                      border-color: <?php echo $bg['cta']; ?>;
+                    }
+                    .event-offers-section .box-section .box .inner a.btn:hover::before{
+                      background: <?php echo $bg['cta']; ?>;
+                    }
+
+                </style>
                 <a href="<?php the_permalink(); ?>" class="btn"><span>Find Out More</span></a>
               </div>
             </div>
@@ -200,14 +226,26 @@ $banner_tittle = get_field('banner_tittle');
               //$color=the_field('bg_color');
            ?>
           <div class="col-12 col-sm-4 col-md-6 col-lg-4">
-            <div class="box"  style="background-color: <?php the_field('bg_color'); ?>;">
+           <?php 
+              $bg =  get_field("bg_color"); 
+              
+            ?>
+            <div class="box"  style="background: <?php echo $bg['background_colors']; ?>">
               <img src="<?php echo $url; ?>" alt=""  /> 
               <?php //the_post_thumbnail('bill-bookings'); ?>
               <div class="inner">
                 <div class="title"><?php the_title(); ?></div>
                 
                 <?php the_excerpt(); ?>
+                <style type="text/css">
+                  .event-offers-section .box-section .box .inner a.btn:hover{
+                    border-color: <?php echo $bg['cta']; ?>;
+                  }
+                  .event-offers-section .box-section .box .inner a.btn:hover::before{
+                    background: <?php echo $bg['cta']; ?>;
+                  }
 
+                </style>
                 <a href="<?php the_permalink(); ?>" class="btn"><span>Find Out More</span></a>
               </div>
             </div>

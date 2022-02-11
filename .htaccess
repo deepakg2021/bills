@@ -6,7 +6,7 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /Bills/
+RewriteBase /bills/
 RewriteRule ^index\.php$ - [L]
 
 # add a trailing slash to /wp-admin

@@ -83,8 +83,9 @@
 										<div class="col-12 col-sm-3 col-md-6 col-lg-3">
 											<div class="mb-3">
 												<label for="formGroupExampleInput" class="form-label">Table Size</label>
-												<select name="party_size" class="form-select form-select-lg mb-3 input" aria-label=".form-select-lg example">
-													<option value="1">1 people</option>
+												<select name="party_size" class="form-select form-select-lg mb-3 input" aria-label=".form-select-lg example">	
+                          										
+                          <option value="1">1 people</option>
 													<option value="2">2 people</option>
 													<option value="3">3 people</option>
 													<option value="4">4 people</option>
@@ -143,8 +144,8 @@
 					</div>
 				</div>
 			<div class="modal-footer">
-				<p>For bookings of 8+ people please enquire <a href="javascript:void(0)">here.</a></p>
-				<p>Powered By <a href="javascript:void(0)"><img src="<?php bloginfo('template_url'); ?>/assets/images/opentable-official.svg" alt="" /></a></p>
+				<p>For bookings of 8+ people please enquire <a href="<?php echo home_url("/group-bookings/")?>">here.</a></p>
+				<p>Powered By <img src="<?php bloginfo('template_url'); ?>/assets/images/opentable-official.svg" alt="" /></p>
 			</div>
 		</div>
 	</div>
@@ -326,7 +327,7 @@
 						<div class="event-offer-popup-section">
 							<div class="heading">Find my nearest Bill’s to me</div>
 								<a class="btn" id="nearest_bill_restro_btn" href="javascript:void(0)"><span>Search Bill’s near me</span></a>
-								<a class="btn-hover" href="javascripv:void(0)">Choose my own location</a>
+								<a class="btn-hover" href="javascripv:void(0)" data-bs-dismiss="modal">Choose my own location</a>
 						</div>
 					</div>
 				</div>

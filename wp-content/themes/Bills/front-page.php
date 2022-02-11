@@ -196,32 +196,35 @@ get_header(); ?>
         <div class="row">
           <?php 
           $_menu_args=array(
-            'post_type' => 'menus',
+            'post_type' => 'fdm-menu',
             'post_status' => 'publish',
-             'order' => 'ASC',
-             'orderby' => 'title'
+            'posts_per_page'  => 3,
           );
-          $_menu_posts=new WP_Query($_menu_args);
+          $_menu_posts = new WP_Query($_menu_args);
+          // echo "<pre>";
+          // print_r($_menu_posts);
+
           while($_menu_posts->have_posts())
           { 
               $_menu_posts->the_post();
-               $id = get_the_ID();
-              $url = wp_get_attachment_url( get_post_thumbnail_id($_menu_posts->ID), 'bill-bookings' ); 
+              $id = get_the_ID();
+              $url = get_field('menu_filter');
+             
           ?>
 
           <div class="col-12 col-sm-4 col-md-4 col-lg-4">
             <div class="dis-box">
-              <img src="<?php echo $url; ?>" alt="" />
+              <img src="<?php echo $url['featured_image']; ?>" alt="" />
               <div class="inner">
                   <?php  $tittle = get_field('tittle');
                   $subtittle = get_field('subtittle');
                    ?>
                   <div class="title"><?php echo $tittle; ?></div>
                   <div class="sub-title"><?php echo $subtittle ?></div>
-                <div class="info">
-                  <a href="<?php the_permalink(); ?>"> <span><?php the_title(); ?></span></a>
-                  <a href="javascript:void(0)" class="view-menus">View Menus</a>
-                </div>
+                  <div class="info">
+                    <a href="<?php echo home_url("/menu?id=$id")?>"> <span><?php the_title(); ?></span></a>
+                    <a href="javascript:void(0)" class="view-menus">View Menus</a>
+                 </div>
               </div>
             </div>
           </div>
