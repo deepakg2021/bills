@@ -35,7 +35,9 @@ get_header();
   </section>
 
 
-
+<?php
+$cFields = $fdm_controller->settings->get_menu_item_custom_fields();
+?>
   <section class="menu-link-top">
     <div class="container">
       <div class="row justify-content-center align-items-center">
@@ -102,10 +104,12 @@ get_header();
             <form action="">
               <ul>
                 <?php 
-                $Fields = $fdm_controller->settings->get_menu_item_custom_fields();
-                //echo '<pre>';
-                //Print_r($Fields[2]->values);
-                $sMain = explode (",", $Fields[2]->values); 
+                $cFields = $fdm_controller->settings->get_menu_item_custom_fields();
+               /*  echo '<pre>';
+                Print_r($Fields); */
+				foreach($cFields as $cf){
+					if($cf->slug=='allergy-filter'){
+						$sMain = explode (",", $cf->values); 
                   foreach($sMain as $val) {
                   //echo '<pre>';
                   //print_r($val);
@@ -125,6 +129,8 @@ get_header();
                 </li>
                 <?php
                 }
+					}
+				}
                 ?>
                
               </ul>
@@ -248,12 +254,21 @@ get_header();
 
 <script type="text/javascript">
   jQuery(document).ready(function($){
-
-    var a=626;
+    <?php $getid = $_GET['id']; 
+    if(isset($getid)) { ?>
+      var a = <?php echo $getid; ?>
+    <?php }
+    else { ?>
+      var a=626;
+    <?php }
+    ?>
+    
+    
     var b='food';
     //console.log(a);
     $(".menu_item_div").hide();
     $(".menu-items").hide();
+    $(".menu-items").parent('.menu_item_div').hide();
     $(".menu"+a).show();
     // $(".menu"+a+" .menu-items").show();
     $(".menu"+a+" .link li").show().addClass("show");
@@ -289,6 +304,7 @@ get_header();
         $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").parent(".link").show();
         $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").show().addClass("show");
         $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").parent(".link").siblings(".menu-items").show();
+        $(".menu"+data_id+" .link li[data-id="+data_menu_id+"]").parent(".link").siblings(".menu-items").parent('.menu_item_div').show();
        }
         // countClass = $(".stp-box").find("li.show").length;
         // if(countClass < 1 ) {
@@ -304,6 +320,7 @@ get_header();
     $(".menu"+a+" .link li[data-id="+b+"]").parent(".link").show();
     $(".menu"+a+" .link li[data-id="+b+"]").show().addClass("show");
     $(".menu"+a+" .link li[data-id="+b+"]").parent(".link").siblings(".menu-items").show();
+    $(".menu"+a+" .link li[data-id="+b+"]").parent(".link").siblings(".menu-items").parent('.menu_item_div').show();
     $(".menu_link2[data-attr="+c+"]").addClass("active_menu_id")
 
     
@@ -324,9 +341,11 @@ get_header();
         $("#contentArea .link li").hide().removeClass("show"); 
         $("#contentArea .link").hide(); 
         $("#contentArea .menu-items").hide(); 
+        $("#contentArea .menu-items").parent('.menu_item_div').hide(); 
         $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").show().addClass("show");
         $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").parent(".link").show();
         $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").parent(".link").siblings(".menu-items").show();
+        $(".menu"+data_menu_id+" .link li[data-id="+data_id+"]").parent(".link").siblings(".menu-items").parent('.menu_item_div').show();
 
         // countClass = $(".stp-box").find(".show").length;
         // if(countClass < 1 ) {

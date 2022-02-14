@@ -369,6 +369,29 @@ jQuery(document).ready(function($) {
     });
 
     // select box ul li view End///////
+	
+	
+	
+	/* event video page */ 
+	
+	jQuery('.videoval').parent().click(function () {
+		
+		if(jQuery(this).children(".videoval").get(0).paused){        
+		
+			jQuery(this).children(".videoval").trigger('play');  
+			jQuery("#videoPlay").hide();
+		}else{       
+			jQuery(this).children(".videoval").get(0).pause();
+			jQuery("#videoPlay").show();
+		}
+	});
+	
+	/* jQuery('.forminator-checkbox-label')
+	
+	jQuery( ".forminator-checkbox-label:contains('Privacy Policy')" ).css( "text-decoration", "underline" ); */
+	
+	
+	
 
 });
 
@@ -484,8 +507,8 @@ jQuery(document).ready(function($) {
 	});
 	jQuery('.first .btn-close').on('click',function(){
 		
-		jQuery('.first select').val('');
-		jQuery('.first input').val('');
+		// jQuery('.first select').val('');
+		// jQuery('.first input').val('');
 		
 			/* var formID = "#form-frontpage";
 			jQuery( formID + " div#location li").removeClass('selected');
