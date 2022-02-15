@@ -78,7 +78,7 @@ get_header(); ?>
             </div>
             <div class="bottom-sec">             
               <?php 
-				$totalLocation = wp_count_terms('location');
+				      $totalLocation = wp_count_posts( 'restaurant' )->publish;
               if (  $totalLocation > 3){
               echo '<a class="btn location_more" data-count="6" data-tcount="'.$totalLocation.'"> <span>Show More</span> </a>';
               }  ?>         
@@ -97,19 +97,7 @@ get_header(); ?>
 
 <script type="text/javascript">
   jQuery( document ).ready(function() {
-	
-	
-	
-	
-	let latLngs = null;
-    
-	
-	
-	
-    
-
-    
-    
+	 let latLngs = null;
   });
   
 function call_ajax( lat, lng )
@@ -354,4 +342,11 @@ http.onreadystatechange = function() {
 http.send(params);
 }
 
+function  makeABookButtonLocation(e) {
+   Selectedrid = e.getAttribute('rid'); 
+   // jQuery(".locationSelect option:contains(Selectedrid)") ;
+   jQuery('.locationSelect').val(Selectedrid);
+}
+
 </script>
+
