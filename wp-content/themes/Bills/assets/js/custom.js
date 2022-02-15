@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
         startTime: '10:00',
         dynamic: false,
         dropdown: true,
-        scrollbar: false
+        scrollbar: true
     });
 	
 	 $("#homeDatepicker").datepicker({

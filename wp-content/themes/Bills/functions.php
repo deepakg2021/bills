@@ -1149,19 +1149,28 @@ function AllLocations(){
 	}else{
 		$nextCount = 3;
 	}
-    $location_terms = get_terms([
-      'taxonomy' => 'location',
-      'hide_empty' => false,
-      'number' => $nextCount,
-    ]);                             
+    // $location_terms = get_terms([
+    //   'taxonomy' => 'location',
+    //   'hide_empty' => false,
+    //   'number' => $nextCount,
+    // ]);
+
+    $args=array(
+      'post_type' => 'restaurant',
+      'post_status' => 'publish',
+    );
+                  
+    $rest_Cust = get_posts( $args );
 	$count = 0;
 	$newMiles = 0;
-    foreach($location_terms as $terms) {
-		$address = get_field('address', $terms);
+
+    foreach($rest_Cust as $terms) {
+		$address = get_field('address', $terms->ID);
 		
-		$laddress = get_field( 'location_address_text','location_'.$terms->term_id );
-		$phone = get_field( 'location_phone_number','location_'.$terms->term_id );
-		$link = get_field( 'location_link','location_'.$terms->term_id );
+		$laddress = get_field( 'location_address_text',$terms->ID);
+		$phone = get_field( 'location_phone_number',$terms->ID);
+		$link = get_field( 'location_link',$terms->ID);
+        $rid = get_field( 'rid',$terms->ID);
 		$lat = $address['lat'];
 		$lang = $address['lng'];
 		
@@ -1180,7 +1189,7 @@ function AllLocations(){
 
         <ul>
             <li>
-              <div class="title"><?php echo $terms->name ?><span><?php echo round($miles); ?> miles</span></div>
+              <div class="title"><?php echo get_the_title($terms->ID); ?><span><?php echo round($miles); ?> miles</span></div>
             </li>
             <li>
               <p><?php echo $laddress; ?></p>
@@ -1188,8 +1197,8 @@ function AllLocations(){
              
             </li>
             <li>
-              <a href="<?php echo get_term_link($terms->slug, 'location'); ?>" class="btn large"><span>View Restaurant</span></a>
-              <a href="javascript:void(0)" class="btn large full" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable"><span>Make A Booking</span></a>
+              <a href="<?php the_permalink($terms->ID) ?>" class="btn large"><span>View Restaurant</span></a>
+              <a href="javascript:void(0)" class="btn large full bookATableCustom" data-bs-toggle="modal" data-bs-target="#exampleModalCenteredScrollable" rid="<?php echo $rid ?>" onclick="makeABookButtonLocation(this)"><span>Make A Booking</span></a>
             </li>
         </ul>
     <?php } /* }

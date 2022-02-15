@@ -223,7 +223,7 @@ get_header(); ?>
                   <div class="sub-title"><?php echo $subtittle ?></div>
                   <div class="info">
                     <a href="<?php echo home_url("/menu?id=$id")?>"> <span><?php the_title(); ?></span></a>
-                    <a href="javascript:void(0)" class="view-menus">View Menus</a>
+                    <a href="<?php echo home_url("/menu")?>" class="view-menus">View Menus</a>
                  </div>
               </div>
             </div>
